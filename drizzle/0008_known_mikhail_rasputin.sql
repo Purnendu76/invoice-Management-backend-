@@ -1,0 +1,1 @@
+ALTER TABLE "user-auth" ALTER COLUMN "id" SET DATA TYPE uuid;

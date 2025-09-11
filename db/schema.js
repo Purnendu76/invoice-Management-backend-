@@ -1,0 +1,117 @@
+import {
+  pgTable,
+  uuid,
+  varchar,
+  numeric,
+  date,
+  text,
+  pgEnum,
+  serial,
+  timestamp
+} from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+
+// ---- ENUMS must come first ----
+export const projectEnum = pgEnum("project", [
+  "NFS",
+  "GAIL",
+  "BGCL",
+  "STP",
+  "Bharat Net",
+  "NFS AMC",
+]);
+
+export const modeOfProjectEnum = pgEnum("mode_of_project", [
+  "Back To Back",
+  "Direct",
+]);
+
+export const stateEnum = pgEnum("state", [
+  "West Bengal",
+  "Delhi",
+  "Bihar",
+  "MP",
+  "Kerala",
+  "Sikkim",
+  "Jharkhand",
+  "Andaman",
+]);
+
+export const mybillCategoryEnum = pgEnum("my_bill_category", [
+  "Service",
+  "Supply",
+  "ROW",
+  "AMC",
+  "Restoration Service",
+  "Restoration Supply",
+  "Restoration Row",
+  "Spares",
+  "Training",
+]);
+
+export const milestoneEnum = pgEnum("milestone", ["60%", "90%", "100%"]);
+
+export const gstPercentageEnum = pgEnum("gst_percentage", [
+  "5%",
+  "12%",
+  "18%",
+]);
+
+export const statusEnum = pgEnum("status", [
+  "Paid",
+  "Cancelled",
+  "Under process",
+  "Credit Note Issued",
+]);
+
+// ---- INVOICES TABLE ----
+export const invoices = pgTable("invoices", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  project: projectEnum("project").notNull(),
+  modeOfProject: modeOfProjectEnum("mode_of_project").notNull(),
+  state: stateEnum("state").notNull(),
+  mybillCategory: mybillCategoryEnum("my_bill_category").notNull(),
+  milestone: milestoneEnum("milestone"),
+
+  invoiceNumber: varchar("invoice_number", { length: 255 }).notNull(),
+  invoiceDate: date("invoice_date").notNull(),
+  submissionDate: date("submission_date").notNull(),
+
+  invoiceBasicAmount: numeric("invoice_basic_amount").notNull(),
+  gstPercentage: gstPercentageEnum("gst_percentage").notNull(),
+
+  invoiceGstAmount: numeric("invoice_gst_amount").notNull().default("0"),
+  totalAmount: numeric("total_amount").notNull().default("0"),
+
+  passedAmountByClient: numeric("passed_amount_by_client").default("0"),
+  retention: numeric("retention").notNull().default("0"),
+  gstWithheld: numeric("gst_withheld").notNull().default("0"),
+  tds: numeric("tds").notNull().default("0"),
+  gstTds: numeric("gst_tds").notNull().default("0"),
+  bocw: numeric("bocw").notNull().default("0"),
+  lowDepthDeduction: numeric("low_depth_deduction").notNull().default("0"),
+  ld: numeric("ld").notNull().default("0"),
+  slaPenalty: numeric("sla_penalty").notNull().default("0"),
+  penalty: numeric("penalty").notNull().default("0"),
+  otherDeduction: numeric("other_deduction").notNull().default("0"),
+
+  totalDeduction: numeric("total_deduction").notNull().default("0"),
+  netPayable: numeric("net_payable").notNull().default("0"),
+
+  status: statusEnum("status").notNull(),
+  amountPaidByClient: numeric("amount_paid_by_client").notNull().default("0"),
+  paymentDate: date("payment_date"),
+  balance: numeric("balance").notNull().default("0"),
+
+  remarks: text("remarks"),
+});
+
+// ---- USERS TABLE ----
+export const users = pgTable("user-auth", {
+  id: uuid("id").default(sql`gen_random_uuid()`).primaryKey(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
+  role: varchar("role", { length: 50 }).default("user"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
