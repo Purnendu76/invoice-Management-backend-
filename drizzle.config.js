@@ -5,6 +5,6 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL ,
+    url: process.env.DATABASE_URL || "postgresql://postgres:password@localhost:5432/invoice_management",
   },
 });

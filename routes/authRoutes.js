@@ -7,33 +7,37 @@ import { eq } from "drizzle-orm";
 
 const router = Router();
 
-// REGISTER
+/**
+ * REGISTER
+ */
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { name, email, password, role } = req.body;
 
-    // check if user already exists
-    const existing = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email));
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
+    }
 
+    const existing = await db.select().from(users).where(eq(users.email, email));
     if (existing.length > 0) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // insert user
-    const newUser = await db
+    const [newUser] = await db
       .insert(users)
-      .values({ email, password: hashedPassword, role: role || "user" })
+      .values({
+        user_name: name,  // ✅ correct schema key
+        email,
+        password: hashedPassword,
+        role: role || "user",
+      })
       .returning();
 
-    // create token
+    // ✅ Include email in JWT
     const token = jwt.sign(
-      { id: newUser[0].id, role: newUser[0].role },
+      { id: newUser.id, email: newUser.email, role: newUser.role },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1h" }
     );
@@ -41,9 +45,10 @@ router.post("/register", async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        id: newUser[0].id,
-        email: newUser[0].email,
-        role: newUser[0].role,
+        id: newUser.id,
+        name: newUser.user_name,
+        email: newUser.email,
+        role: newUser.role,
       },
     });
   } catch (error) {
@@ -52,35 +57,37 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// LOGIN
+/*** LOGIN ***/
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, email))
-      .limit(1);
+    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
 
-    if (!user.length) {
+    if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const validPassword = await bcrypt.compare(password, user[0].password);
+    const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    // ✅ Include email in JWT
     const token = jwt.sign(
-      { id: user[0].id, role: user[0].role },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1h" }
     );
 
     res.json({
       token,
-      user: { id: user[0].id, email: user[0].email, role: user[0].role },
+      user: {
+        id: user.id,
+        name: user.user_name, // ✅ fixed schema mismatch
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error("Login error:", error);

@@ -1,0 +1,3 @@
+CREATE TYPE "public"."my_bill_categorys" AS ENUM('Service', 'Supply', 'ROW', 'AMC', 'Restoration Service', 'Restoration Supply', 'Restoration Row', 'Spares', 'Training');--> statement-breakpoint
+ALTER TABLE "invoices" ALTER COLUMN "my_bill_category" SET DATA TYPE "public"."my_bill_categorys" USING "my_bill_category"::text::"public"."my_bill_categorys";--> statement-breakpoint
+DROP TYPE "public"."my_bill_category";

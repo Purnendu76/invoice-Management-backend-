@@ -85,6 +85,230 @@
       "when": 1757501998232,
       "tag": "0011_huge_cammi",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1758014163385,
+      "tag": "0012_perpetual_wilson_fisk",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1758014280768,
+      "tag": "0013_high_titanium_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1758019219363,
+      "tag": "0014_youthful_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1758112365460,
+      "tag": "0015_broken_grandmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1758112885415,
+      "tag": "0016_ambitious_captain_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1758113865928,
+      "tag": "0017_high_sersi",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1758115695466,
+      "tag": "0018_sleepy_ultragirl",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1758115800258,
+      "tag": "0019_harsh_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1758115870736,
+      "tag": "0020_cool_dark_beast",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1758116472485,
+      "tag": "0021_messy_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1758171221183,
+      "tag": "0022_demonic_whirlwind",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1758171736189,
+      "tag": "0023_careless_blue_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1758175357412,
+      "tag": "0024_petite_captain_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1758177305607,
+      "tag": "0025_absent_jamie_braddock",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1758177635343,
+      "tag": "0026_left_silver_samurai",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1758177688711,
+      "tag": "0027_nostalgic_nemesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1758180096173,
+      "tag": "0028_hard_crystal",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1758181298691,
+      "tag": "0029_steep_risque",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1758181733713,
+      "tag": "0030_regular_meltdown",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1758181857141,
+      "tag": "0031_fine_wild_child",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1758181880927,
+      "tag": "0032_silent_madripoor",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1758181944709,
+      "tag": "0033_wise_quasar",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1758181991453,
+      "tag": "0034_cultured_captain_midlands",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1758182018624,
+      "tag": "0035_legal_leopardon",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1758182050518,
+      "tag": "0036_lethal_stephen_strange",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1758182169703,
+      "tag": "0037_wide_shadow_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1758182194326,
+      "tag": "0038_organic_la_nuit",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1758182580344,
+      "tag": "0039_elite_the_anarchist",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1758182855655,
+      "tag": "0040_fearless_meggan",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1758183096578,
+      "tag": "0041_silent_gunslinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1758183302279,
+      "tag": "0042_flowery_winter_soldier",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1758183371097,
+      "tag": "0043_cultured_plazm",
+      "breakpoints": true
     }
   ]
 }

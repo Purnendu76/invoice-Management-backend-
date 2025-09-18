@@ -1,0 +1,1 @@
+ALTER TABLE "user-auth" DROP COLUMN "user_Id";

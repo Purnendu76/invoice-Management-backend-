@@ -6,66 +6,67 @@ import {
   date,
   text,
   pgEnum,
-  serial,
-  timestamp
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-// ---- ENUMS must come first ----
-export const projectEnum = pgEnum("project", [
-  "NFS",
-  "GAIL",
-  "BGCL",
-  "STP",
-  "Bharat Net",
-  "NFS AMC",
-]);
+// ----------------- ENUMS -----------------
+// Add `ifNotExists: true` to prevent "already exists" errors
 
-export const modeOfProjectEnum = pgEnum("mode_of_project", [
-  "Back To Back",
-  "Direct",
-]);
+export const projectEnum = pgEnum(
+  "projects",
+  ["NFS", "GAIL", "BGCL", "STP", "Bharat Net", "NFS AMC"],
+  { ifNotExists: true }
+);
 
-export const stateEnum = pgEnum("state", [
-  "West Bengal",
-  "Delhi",
-  "Bihar",
-  "MP",
-  "Kerala",
-  "Sikkim",
-  "Jharkhand",
-  "Andaman",
-]);
+export const modeOfProjectEnum = pgEnum(
+  "mode_of_projects",
+  ["Back To Back", "Direct"],
+  { ifNotExists: true }
+);
 
-export const mybillCategoryEnum = pgEnum("my_bill_category", [
-  "Service",
-  "Supply",
-  "ROW",
-  "AMC",
-  "Restoration Service",
-  "Restoration Supply",
-  "Restoration Row",
-  "Spares",
-  "Training",
-]);
+export const stateEnum = pgEnum(
+  "states",
+  ["West Bengal", "Delhi", "Bihar", "MP", "Kerala", "Sikkim", "Jharkhand", "Andaman"],
+  { ifNotExists: true }
+);
 
-export const milestoneEnum = pgEnum("milestone", ["60%", "90%", "100%"]);
+export const mybillCategoryEnum = pgEnum(
+  "my_bill_categorys",
+  [
+    "Service",
+    "Supply",
+    "ROW",
+    "AMC",
+    "Restoration Service",
+    "Restoration Supply",
+    "Restoration Row",
+    "Spares",
+    "Training",
+  ],
+  { ifNotExists: true }
+);
 
-export const gstPercentageEnum = pgEnum("gst_percentage", [
-  "5%",
-  "12%",
-  "18%",
-]);
+export const milestoneEnum = pgEnum(
+  "milestonees",
+  ["60%", "90%", "100%"],
+  { ifNotExists: true }
+);
 
-export const statusEnum = pgEnum("status", [
-  "Paid",
-  "Cancelled",
-  "Under process",
-  "Credit Note Issued",
-]);
+export const gstPercentageEnum = pgEnum(
+  "gst_percentages",
+  ["5%", "12%", "18%"],
+  { ifNotExists: true }
+);
 
-// ---- INVOICES TABLE ----
-export const invoices = pgTable("invoices", {
+export const statusEnum = pgEnum(
+  "pay-status",
+  ["Paid", "Cancelled", "Under process", "Credit Note Issued"],
+  { ifNotExists: true }
+);
+
+// ----------------- INVOICES TABLE -----------------
+export const invoices = pgTable("my-invoices", {
   id: uuid("id").primaryKey().defaultRandom(),
 
   project: projectEnum("project").notNull(),
@@ -107,9 +108,10 @@ export const invoices = pgTable("invoices", {
   remarks: text("remarks"),
 });
 
-// ---- USERS TABLE ----
-export const users = pgTable("user-auth", {
-  id: uuid("id").default(sql`gen_random_uuid()`).primaryKey(),
+// ----------------- USERS Authentication TABLE -----------------
+export const users = pgTable("auth", {
+id: uuid("id").default(sql`gen_random_uuid()`).primaryKey(),
+  user_name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
   role: varchar("role", { length: 50 }).default("user"),
