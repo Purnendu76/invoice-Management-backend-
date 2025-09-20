@@ -1,11 +1,11 @@
 {
-  "id": "c80fd3b7-99f3-40c4-aaa8-9f5e23151e02",
-  "prevId": "6dffcea1-16bd-431b-a85d-03b0c0817a0a",
+  "id": "3a86fd51-b95c-4522-b123-ac83970218d0",
+  "prevId": "28d78c6e-249d-4317-8085-498cd286e043",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.invoices": {
-      "name": "invoices",
+    "public.my-invoicees": {
+      "name": "my-invoicees",
       "schema": "",
       "columns": {
         "id": {
@@ -15,30 +15,36 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "project": {
           "name": "project",
-          "type": "project",
+          "type": "my-project",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "mode_of_project": {
           "name": "mode_of_project",
-          "type": "mode_of_project",
+          "type": "mode_of_projecte",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "state": {
           "name": "state",
-          "type": "state",
+          "type": "states",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "my_bill_category": {
           "name": "my_bill_category",
-          "type": "my_bill_category",
+          "type": "my_bill_categoriy",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -221,9 +227,83 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "my-invoicees_user_id_users_auth_id_fk": {
+          "name": "my-invoicees_user_id_users_auth_id_fk",
+          "tableFrom": "my-invoicees",
+          "tableTo": "users_auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users_auth": {
+      "name": "users_auth",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_auth_email_unique": {
+          "name": "users_auth_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -248,16 +328,16 @@
         "100%"
       ]
     },
-    "public.mode_of_project": {
-      "name": "mode_of_project",
+    "public.mode_of_projecte": {
+      "name": "mode_of_projecte",
       "schema": "public",
       "values": [
         "Back To Back",
         "Direct"
       ]
     },
-    "public.my_bill_category": {
-      "name": "my_bill_category",
+    "public.my_bill_categoriy": {
+      "name": "my_bill_categoriy",
       "schema": "public",
       "values": [
         "Service",
@@ -271,8 +351,8 @@
         "Training"
       ]
     },
-    "public.project": {
-      "name": "project",
+    "public.my-project": {
+      "name": "my-project",
       "schema": "public",
       "values": [
         "NFS",
@@ -283,8 +363,8 @@
         "NFS AMC"
       ]
     },
-    "public.state": {
-      "name": "state",
+    "public.states": {
+      "name": "states",
       "schema": "public",
       "values": [
         "West Bengal",

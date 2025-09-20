@@ -1,11 +1,13 @@
 import express from "express";
 import cors from "cors";
 import invoiceRoutes from "./routes/invoiceRoutes.js";
+import userInvoiceRoutes from "./routes/userInvoiceRoutes.js"; 
 import authRoutes from "./routes/authRoutes.js"; 
 import { authMiddleware } from "./authMiddleware.js";
+import { authorizeRoles } from "./authorizeRoles.js";
 
 const app = express();
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT;
 
 // ✅ Middleware
 app.use(cors());
@@ -14,11 +16,21 @@ app.use(express.json());
 // ✅ Auth routes (no middleware here)
 app.use("/api/v1/auth", authRoutes);
 
-// ✅ Invoice routes (protected by auth middleware)
-app.use("/api/v1/invoices",authMiddleware, invoiceRoutes);
+// ✅ Admin invoices (only Admins)
+app.use(
+  "/api/v1/invoices",
+  authMiddleware,
+  authorizeRoles("Admin"),
+  invoiceRoutes
+);
 
-// User invoices (protected)
-app.use("/api/v1/user-invoices", authMiddleware, invoiceRoutes);
+// ✅ User invoices (Users + Admins can access)
+app.use(
+  "/api/v1/user-invoices",
+  authMiddleware,
+  authorizeRoles("user", "Admin"),
+  userInvoiceRoutes
+);
 
 // ✅ Root route
 app.get("/", (req, res) => {

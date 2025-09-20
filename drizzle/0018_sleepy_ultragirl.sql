@@ -1,2 +1,0 @@
-ALTER TABLE "user-auth" ALTER COLUMN "user_Id" DROP NOT NULL;--> statement-breakpoint
-ALTER TABLE "user-auth" ADD CONSTRAINT "user-auth_user_Id_user-auth_id_fk" FOREIGN KEY ("user_Id") REFERENCES "public"."user-auth"("id") ON DELETE cascade ON UPDATE no action;

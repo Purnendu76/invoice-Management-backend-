@@ -27,7 +27,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // get all for logged-in user
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     console.log("user-invoices: req.user =", req.user); 
     const allInvoices = await db
@@ -42,7 +42,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // get single (owner only)
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const [invoice] = await db
       .select()
@@ -57,7 +57,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
 });
 
 // update (owner only)
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     let invoiceData = buildInvoicePayload(req);
     invoiceData = calculateInvoiceTotals(invoiceData);
@@ -76,7 +76,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // delete (owner only)
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const [deletedInvoice] = await db
       .delete(invoices)

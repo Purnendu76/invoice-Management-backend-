@@ -14,13 +14,13 @@ import { sql } from "drizzle-orm";
 // Add `ifNotExists: true` to prevent "already exists" errors
 
 export const projectEnum = pgEnum(
-  "projects",
+  "my-project",
   ["NFS", "GAIL", "BGCL", "STP", "Bharat Net", "NFS AMC"],
   { ifNotExists: true }
 );
 
 export const modeOfProjectEnum = pgEnum(
-  "mode_of_projects",
+  "mode_of_projecte",
   ["Back To Back", "Direct"],
   { ifNotExists: true }
 );
@@ -32,7 +32,7 @@ export const stateEnum = pgEnum(
 );
 
 export const mybillCategoryEnum = pgEnum(
-  "my_bill_categorys",
+  "my_bill_categoriy",
   [
     "Service",
     "Supply",
@@ -48,26 +48,27 @@ export const mybillCategoryEnum = pgEnum(
 );
 
 export const milestoneEnum = pgEnum(
-  "milestonees",
+  "milestone",
   ["60%", "90%", "100%"],
   { ifNotExists: true }
 );
 
 export const gstPercentageEnum = pgEnum(
-  "gst_percentages",
+  "gst_percentage",
   ["5%", "12%", "18%"],
   { ifNotExists: true }
 );
 
 export const statusEnum = pgEnum(
-  "pay-status",
+  "status",
   ["Paid", "Cancelled", "Under process", "Credit Note Issued"],
   { ifNotExists: true }
 );
 
 // ----------------- INVOICES TABLE -----------------
-export const invoices = pgTable("my-invoices", {
+export const invoices = pgTable("my-invoicees", {
   id: uuid("id").primaryKey().defaultRandom(),
+ userId: uuid("user_id"),
 
   project: projectEnum("project").notNull(),
   modeOfProject: modeOfProjectEnum("mode_of_project").notNull(),
@@ -109,7 +110,7 @@ export const invoices = pgTable("my-invoices", {
 });
 
 // ----------------- USERS Authentication TABLE -----------------
-export const users = pgTable("auth", {
+export const users = pgTable("users_auth", {
 id: uuid("id").default(sql`gen_random_uuid()`).primaryKey(),
   user_name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),

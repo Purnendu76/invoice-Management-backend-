@@ -1,11 +1,11 @@
 {
-  "id": "279a97a0-4f89-45d7-b341-efa3f94ce4bd",
+  "id": "15741642-5b37-46eb-b2bb-6ce0711a3d41",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.invoices": {
-      "name": "invoices",
+    "public.my-invoicees": {
+      "name": "my-invoicees",
       "schema": "",
       "columns": {
         "id": {
@@ -17,28 +17,28 @@
         },
         "project": {
           "name": "project",
-          "type": "project",
+          "type": "my-project",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "mode_of_project": {
           "name": "mode_of_project",
-          "type": "mode_of_project",
+          "type": "mode_of_projecte",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "state": {
           "name": "state",
-          "type": "state",
+          "type": "states",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "my_bill_category": {
           "name": "my_bill_category",
-          "type": "my_bill_category",
+          "type": "my_bill_categoriy",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -48,7 +48,7 @@
           "type": "milestone",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "invoice_number": {
           "name": "invoice_number",
@@ -70,7 +70,7 @@
         },
         "invoice_basic_amount": {
           "name": "invoice_basic_amount",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
@@ -83,93 +83,108 @@
         },
         "invoice_gst_amount": {
           "name": "invoice_gst_amount",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'0'"
         },
         "total_amount": {
           "name": "total_amount",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "'0'"
         },
         "passed_amount_by_client": {
           "name": "passed_amount_by_client",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'0'"
         },
         "retention": {
           "name": "retention",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "gst_withheld": {
           "name": "gst_withheld",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "tds": {
           "name": "tds",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "gst_tds": {
           "name": "gst_tds",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "bocw": {
           "name": "bocw",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "low_depth_deduction": {
           "name": "low_depth_deduction",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "ld": {
           "name": "ld",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "sla_penalty": {
           "name": "sla_penalty",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "penalty": {
           "name": "penalty",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "other_deduction": {
           "name": "other_deduction",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "total_deduction": {
           "name": "total_deduction",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "net_payable": {
           "name": "net_payable",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "status": {
           "name": "status",
@@ -180,9 +195,10 @@
         },
         "amount_paid_by_client": {
           "name": "amount_paid_by_client",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "payment_date": {
           "name": "payment_date",
@@ -192,9 +208,10 @@
         },
         "balance": {
           "name": "balance",
-          "type": "numeric(12, 2)",
+          "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "'0'"
         },
         "remarks": {
           "name": "remarks",
@@ -207,6 +224,66 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users_auth": {
+      "name": "users_auth",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'user'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_auth_email_unique": {
+          "name": "users_auth_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -231,16 +308,16 @@
         "100%"
       ]
     },
-    "public.mode_of_project": {
-      "name": "mode_of_project",
+    "public.mode_of_projecte": {
+      "name": "mode_of_projecte",
       "schema": "public",
       "values": [
         "Back To Back",
         "Direct"
       ]
     },
-    "public.my_bill_category": {
-      "name": "my_bill_category",
+    "public.my_bill_categoriy": {
+      "name": "my_bill_categoriy",
       "schema": "public",
       "values": [
         "Service",
@@ -254,8 +331,8 @@
         "Training"
       ]
     },
-    "public.project": {
-      "name": "project",
+    "public.my-project": {
+      "name": "my-project",
       "schema": "public",
       "values": [
         "NFS",
@@ -266,8 +343,8 @@
         "NFS AMC"
       ]
     },
-    "public.state": {
-      "name": "state",
+    "public.states": {
+      "name": "states",
       "schema": "public",
       "values": [
         "West Bengal",
