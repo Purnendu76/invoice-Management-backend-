@@ -7,12 +7,12 @@ import { eq } from "drizzle-orm";
 
 const router = Router();
 
-/**
- * REGISTER
- */
+// -------------------------------
+// REGISTER → Create new user
+// -------------------------------
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, project_role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Name, email and password are required" });
@@ -28,16 +28,22 @@ router.post("/register", async (req, res) => {
     const [newUser] = await db
       .insert(users)
       .values({
-        user_name: name,  // ✅ correct schema key
+        user_name: name,
         email,
         password: hashedPassword,
         role: role || "user",
+        project_role: project_role || null,
       })
       .returning();
 
-    // ✅ Include email in JWT
     const token = jwt.sign(
-      { id: newUser.id, email: newUser.email, role: newUser.role },
+      {
+        id: newUser.id,
+        name: newUser.user_name,
+        email: newUser.email,
+        role: newUser.role,
+        projectRole: newUser.project_role,
+      },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1h" }
     );
@@ -49,6 +55,7 @@ router.post("/register", async (req, res) => {
         name: newUser.user_name,
         email: newUser.email,
         role: newUser.role,
+        projectRole: newUser.project_role,
       },
     });
   } catch (error) {
@@ -57,7 +64,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/*** LOGIN ***/
+// -------------------------------
+// LOGIN → Authenticate user
+// -------------------------------
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -73,9 +82,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // ✅ Include email in JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      {
+        id: user.id,
+        name: user.user_name,
+        email: user.email,
+        role: user.role,
+        projectRole: user.project_role,
+      },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "1h" }
     );
@@ -84,13 +98,122 @@ router.post("/login", async (req, res) => {
       token,
       user: {
         id: user.id,
-        name: user.user_name, // ✅ fixed schema mismatch
+        name: user.user_name,
         email: user.email,
         role: user.role,
+        projectRole: user.project_role,
       },
     });
   } catch (error) {
     console.error("Login error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// -------------------------------
+// GET /me → Get currently logged-in user
+// -------------------------------
+router.get("/me", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const token = authHeader.split(" ")[1];
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, decoded.id))
+      .limit(1);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      id: user.id,
+      name: user.user_name,
+      email: user.email,
+      role: user.role,
+      projectRole: user.project_role,
+    });
+  } catch (error) {
+    console.error("Fetch current user error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// -------------------------------
+// GET /register → Get all users
+// -------------------------------
+router.get("/register", async (req, res) => {
+  try {
+    const allUsers = await db.select().from(users);
+    res.json(allUsers);
+  } catch (error) {
+    console.error("Get users error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// -------------------------------
+// DELETE /register/:id → Delete user
+// -------------------------------
+router.delete("/register/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await db.delete(users).where(eq(users.id, id)).returning();
+
+    if (deleted.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted successfully", user: deleted[0] });
+  } catch (error) {
+    console.error("Delete user error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// -------------------------------
+// PUT /register/:id → Update project_role
+// -------------------------------
+router.put("/register/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { project_role } = req.body;
+
+    if (!project_role) {
+      return res.status(400).json({ message: "project_role is required" });
+    }
+
+    const allowedRoles = ["NFS", "GAIL", "BGCL", "STP", "BHRAT NET", "NFS AMC"];
+    if (!allowedRoles.includes(project_role)) {
+      return res.status(400).json({ message: "Invalid project role" });
+    }
+
+    const [updatedUser] = await db
+      .update(users)
+      .set({ project_role })
+      .where(eq(users.id, id))
+      .returning();
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Project role updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Update project role error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

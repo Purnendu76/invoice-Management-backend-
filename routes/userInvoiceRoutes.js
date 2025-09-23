@@ -1,7 +1,7 @@
 // routes/userInvoiceRoutes.js
 import { Router } from "express";
 import db from "../db/db_connect.js";
-import { invoices } from "../db/schema.js";
+import { invoices, users } from "../db/schema.js";
 import { buildInvoicePayload } from "../helpers/invoiceHelpers.js";
 import { calculateInvoiceTotals } from "../helpers/invoiceCalculations.js";
 import { eq, and } from "drizzle-orm";
@@ -35,6 +35,24 @@ router.get("/", async (req, res) => {
       .from(invoices)
       .where(eq(invoices.userId, req.user.id)); 
     res.json(allInvoices);
+  } catch (error) {
+    console.error("Get invoices error:", error);
+    res.status(500).json({ error: "Failed to fetch invoices" });
+  }
+});
+
+//all users project invoices (admin only)
+router.get("/project", async (req, res) => {
+  try {
+    // console.log("user-invoices: req.user =", req.user); 
+    const allInvoices = await db
+      .select()
+      .from(invoices)
+      .leftJoin(users, eq(invoices.project, users.project_role))
+      .where(eq(invoices.project, req.user.project)); 
+    res.json(allInvoices);
+    console.log(allInvoices);
+    
   } catch (error) {
     console.error("Get invoices error:", error);
     res.status(500).json({ error: "Failed to fetch invoices" });

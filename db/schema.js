@@ -115,6 +115,7 @@ id: uuid("id").default(sql`gen_random_uuid()`).primaryKey(),
   user_name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: varchar("password", { length: 255 }).notNull(),
+  project_role: projectEnum("project_role"),
   role: varchar("role", { length: 50 }).default("user"),
   createdAt: timestamp("created_at").defaultNow(),
 });
