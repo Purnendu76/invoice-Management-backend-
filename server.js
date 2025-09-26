@@ -27,15 +27,11 @@ app.use(
 // ✅ User invoices (Users + Admins can access)
 app.use(
   "/api/v1/user-invoices",
-  // authMiddleware,
-  // authorizeRoles("user", "Admin"),
+  authMiddleware,
+  authorizeRoles("user", "Admin"),
   userInvoiceRoutes
 );
 
-// app.use(
-//   "/api/v1/user-invoices/project",
-//   userInvoiceRoutes
-// )
 
 // ✅ Root route
 app.get("/", (req, res) => {

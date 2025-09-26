@@ -29,7 +29,7 @@ router.post("/", authMiddleware, async (req, res) => {
 // get all for logged-in user
 router.get("/", async (req, res) => {
   try {
-    console.log("user-invoices: req.user =", req.user); 
+
     const allInvoices = await db
       .select()
       .from(invoices)
@@ -41,21 +41,38 @@ router.get("/", async (req, res) => {
   }
 });
 
-//all users project invoices (admin only)
+// GET /project  — Admin: all invoices for project; user: only their invoices for project
 router.get("/project", async (req, res) => {
   try {
-    // console.log("user-invoices: req.user =", req.user); 
-    const allInvoices = await db
-      .select()
-      .from(invoices)
-      .leftJoin(users, eq(invoices.project, users.project_role))
-      .where(eq(invoices.project, req.user.project)); 
+    const user = req.user;
+    if (!user) return res.status(401).json({ error: "Unauthorized" });
+
+    console.log("user-invoices: req.user =", user);
+    console.log("user.project:", user.project);
+
+    let allInvoices;
+
+    if (user.role === "Admin") {
+      // Admin: include invoice + creator info (join on userId -> users.id)
+      allInvoices = await db
+        .select({ invoice: invoices, user: users })
+        .from(invoices)
+        .leftJoin(users, eq(invoices.userId, users.id))
+        .where(eq(invoices.project, user.projectRole));
+    } else {
+      // Regular user: only invoices created by this user within same project
+      allInvoices = await db
+        .select()
+        .from(invoices)
+        .where(and(eq(invoices.project, user.projectRole), eq(invoices.userId, user.id)));
+    }
     res.json(allInvoices);
-    console.log(allInvoices);
-    
+    console.log("found invoices count:", Array.isArray(allInvoices) ? allInvoices.length : 0);
+    // send a single JSON response (easy for frontend to consume)
+    // return res.status(200).json({ user, invoices: allInvoices });
   } catch (error) {
     console.error("Get invoices error:", error);
-    res.status(500).json({ error: "Failed to fetch invoices" });
+    return res.status(500).json({ error: "Failed to fetch invoices" });
   }
 });
 
